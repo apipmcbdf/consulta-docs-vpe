@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Documentação - NÃO RECEBEM VPE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #007BFF;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #resultado {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+        .pendencias {
+            margin-top: 10px;
+            text-align: left;
+        }
+        .pendencias a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .pendencias a:hover {
+            text-decoration: underline;
+        }
+        .instrucao {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Verificar Documentação - NÃO RECEBEM VPE</h1>
+        <p>Digite seu CPF:</p>
+        <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+        <button onclick="verificarDocumentacao()">Verificar</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        const cpfsCompletos = [
+"12696038767"
+        ];
+
+        const cpfsPendentes = {
+"72597780759": ['IDENTIDADE','DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE', 'PROCURAÇÃO VPE']
+        };
+
+        const linksDocumentos = {
+            "CONTRATO VPE": "https://drive.google.com/file/d/1-0PkD2Y9azc6TxnDzl1SmPHfXlKFyj7g/view?usp=sharing",
+            "DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE": "https://drive.google.com/file/d/1-0Ee-gDuO4jHjOGBLFQHNR7pVcn8eKSf/view?usp=sharing",
+            "PROCURAÇÃO VPE": "https://drive.google.com/file/d/1-1IL4GtaIA0uE_OeSJuvqNtuAGiWF-4D/view?usp=sharing"
+        };
+
+        function verificarDocumentacao() {
+            const cpf = document.getElementById("cpf").value.trim();
+            const resultado = document.getElementById("resultado");
+
+            const cpfSemFormatacao = cpf.replace(/\D/g, "");
+
+            if (cpfsCompletos.includes(cpfSemFormatacao)) {
+                resultado.innerHTML = "<span style='color: green;'>DOCUMENTAÇÃO COMPLETA</span>";
+            } else if (cpfsPendentes[cpfSemFormatacao]) {
+                let pendencias = cpfsPendentes[cpfSemFormatacao]
+                    .map(doc => linksDocumentos[doc] 
+                        ? `<li>${doc} - <a href='${linksDocumentos[doc]}' target='_blank'>Baixar</a></li>`
+                        : `<li>${doc}</li>`)
+                    .join("");
+                resultado.innerHTML = `
+                    <span style='color: red;'>INCOMPLETO</span>
+                    <div class='pendencias'>
+                        <p>Documentos pendentes:</p>
+                        <ul>${pendencias}</ul>
+                    </div>
+			<div class='instrucao'>
+   			 <p>Por favor, envie os documentos pendentes devidamente escaneados para o e-mail <strong>documentos@apipmcbdf.com.br</strong> com o assunto <em>"Documentação Pendente VPE"</em>.</p>
+    <p>É importante que os documentos sejam escaneados em alta qualidade para garantir sua legibilidade. Além disso, o envio dos originais é obrigatório e pode ser realizado das seguintes formas:</p>
+    <ul>
+        <li><strong>Por correio:</strong> envie para o endereço abaixo:</li>
+        <address>
+            Rua Evaristo da Veiga, 55, 10º andar<br>
+            CEP: 20031-040
+        </address>
+        <li><strong>Entrega pessoalmente:</strong> no mesmo endereço, durante o horário de atendimento (das 09h às 13h).</li>
+    </ul>
+    <p>Caso tenha dúvidas, estamos à disposição para auxiliá-lo(a).</p>
+</div>
+
+                `;
+            } else {
+                resultado.innerHTML = "<span style='color: red;'>CPF NÃO ENCONTRADO</span>";
+            }
+        }
+    </script>
+</body>
+</html>
