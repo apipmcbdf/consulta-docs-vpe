@@ -1,90 +1,244 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificar Documentação - NÃO RECEBEM VPE</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 400px;
-        }
-        input {
-            width: 90%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 15px;
-            border: none;
-            background: #007BFF;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        #resultado {
-            margin-top: 15px;
-            font-size: 18px;
-        }
-        .pendencias {
-            margin-top: 10px;
-            text-align: left;
-        }
-        .pendencias a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        .pendencias a:hover {
-            text-decoration: underline;
-        }
-        .instrucao {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
-            text-align: left;
-        }
-    </style>
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('keydown', function (event) {
-            if ((event.ctrlKey && event.key === 'u') || event.key === 'F12') {
-                event.preventDefault();
-                alert("Ação desativada para proteger o conteúdo da página.");
-            }
-        });
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verificar Documentação - NÃO RECEBEM VPE</title>
+  <style>
+    /* Reset básico de margens e padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ece9e6, #ffffff); /* Gradiente claro */
+      color: #333;
+    }
+
+    .container {
+      background: #ffffffcc; /* Fundo branco com leve transparência */
+      backdrop-filter: blur(6px);
+      border-radius: 12px;
+      padding: 30px;
+      width: 420px; /* Largura um pouco maior para acomodar textos */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .container h1 {
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      color: #007BFF;
+    }
+
+    .container p {
+      margin-bottom: 20px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    /* Grupo de input + label + ícone (opcional, para visual mais consistente) */
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      padding-right: 40px; /* espaço para ícone, se quiser inserir */
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #007BFF;
+    }
+
+    /* Ícone de usuário (opcional) */
+    .input-group .icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+
+    button {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #007BFF;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* Animação de aparição suave */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Estilização para pendências e instruções */
+    .pendencias {
+      margin-top: 15px;
+      text-align: left;
+    }
+
+    .pendencias h2 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: #d00;
+    }
+
+    .instrucao {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: #555;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .instrucao address {
+      font-style: normal;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    /* -- LISTA ENUMERADA PERSONALIZADA -- */
+    /* Resetando a lista padrão */
+    ol {
+      list-style: none;           /* remove marcadores padrões */
+      counter-reset: docCounter;  /* reset do contador */
+      padding: 0;
+      margin: 0;
+    }
+    ol li {
+      counter-increment: docCounter;       /* incrementa o contador */
+      background: #f9f9f9;
+      margin-bottom: 10px;
+      padding: 10px 10px 10px 40px;        /* espaço para o número */
+      border-radius: 6px;
+      position: relative;                  /* para posicionar o número */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: background-color 0.3s;
+    }
+
+    ol li:hover {
+      background-color: #eef4ff;
+    }
+
+    /* Exibe o número antes de cada LI */
+    ol li::before {
+      content: counter(docCounter) ". ";
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      font-weight: bold;
+      color: #007BFF;
+    }
+
+    /* Ajuste da cor e estilo do link 'Baixar' */
+    .pendencias a {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 4px 8px;
+      background: #007BFF;
+      color: #fff;
+      border-radius: 3px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .pendencias a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+
+  <!-- Bloquear acesso ao código-fonte (não garante segurança, mas ajuda a desencorajar) -->
+  <script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('keydown', function (event) {
+      if ((event.ctrlKey && event.key === 'u') || event.key === 'F12') {
+        event.preventDefault();
+        alert("Ação desativada para proteger o conteúdo da página.");
+      }
+    });
+  </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Verificar Documentação - NÃO RECEBEM VPE</h1>
-        <p>Digite seu CPF:</p>
-        <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
-        <button onclick="verificarDocumentacao()">Verificar</button>
-        <div id="resultado"></div>
+
+  <div class="container">
+    <h1>Verificar Documentação - NÃO RECEBEM VPE</h1>
+    <p>Para conferir se sua documentação já está completa, insira seu CPF abaixo.</p>
+
+    <!-- Input group com label e opcional ícone -->
+    <div class="input-group">
+      <label for="cpf">Digite seu CPF</label>
+      <input
+        type="text"
+        id="cpf"
+        placeholder="Ex: 000.000.000-00"
+        maxlength="14"
+      />
+      <!-- Ícone opcional:
+      <span class="icon">&#128100;</span>
+      -->
     </div>
 
-    <script>
-        const cpfsCompletos = [
-            "61241202753",
+    <button onclick="verificarDocumentacao()">Verificar</button>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    // CPFs que já possuem documentação completa
+    const cpfsCompletos = [
+      "61241202753",
 "00241371708",
 "73489395700",
 "88011283715",
@@ -1317,10 +1471,11 @@
 "00488307716",
 "02031799789",
 "87005204700"
-        ];
+    ];
 
-        const cpfsPendentes = {
-            "93328842772": ['DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE'],
+    // CPFs pendentes, com array de documentos a serem entregues
+    const cpfsPendentes = {
+      "93328842772": ['DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE'],
 "46159096753": ['DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE'],
 "46005145720": ['DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE'],
 "45912548791": ['DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE'],
@@ -2098,57 +2253,76 @@
 "40361497768": ['COMPROVANTE DE RESIDENCIA', 'CONTRACHEQUE', 'IDENTIDADE', 'CONTRATO VPE', 'DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE', 'PROCURAÇÃO VPE'],
 "02565167741": ['COMPROVANTE DE RESIDENCIA', 'CONTRACHEQUE', 'IDENTIDADE', 'CONTRATO VPE', 'DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE', 'PROCURAÇÃO VPE'],
 "08544575773": ['COMPROVANTE DE RESIDENCIA', 'CONTRACHEQUE', 'IDENTIDADE', 'CONTRATO VPE', 'DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE', 'PROCURAÇÃO VPE']
-        };
+    };
 
-        const linksDocumentos = {
-            "CONTRATO VPE": "https://drive.google.com/file/d/1-0PkD2Y9azc6TxnDzl1SmPHfXlKFyj7g/view?usp=sharing",
-            "DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE": "https://drive.google.com/file/d/1-0Ee-gDuO4jHjOGBLFQHNR7pVcn8eKSf/view?usp=sharing",
-            "PROCURAÇÃO VPE": "https://drive.google.com/file/d/1-1IL4GtaIA0uE_OeSJuvqNtuAGiWF-4D/view?usp=sharing"
-        };
+    // Links para download de documentos
+    const linksDocumentos = {
+      "CONTRATO VPE": "https://drive.google.com/file/d/1-0PkD2Y9azc6TxnDzl1SmPHfXlKFyj7g/view?usp=sharing",
+      "DECLARAÇÃO DE INEXISTENCIA DE AÇÃO VPE": "https://drive.google.com/file/d/1-0Ee-gDuO4jHjOGBLFQHNR7pVcn8eKSf/view?usp=sharing",
+      "PROCURAÇÃO VPE": "https://drive.google.com/file/d/1-1IL4GtaIA0uE_OeSJuvqNtuAGiWF-4D/view?usp=sharing"
+    };
 
-        function verificarDocumentacao() {
-            const cpf = document.getElementById("cpf").value.trim();
-            const resultado = document.getElementById("resultado");
+    function verificarDocumentacao() {
+      const cpfDigitado = document.getElementById("cpf").value.trim();
+      const resultado = document.getElementById("resultado");
 
-            const cpfSemFormatacao = cpf.replace(/\D/g, "");
+      // Remove pontos e traços do CPF digitado
+      const cpfSemFormatacao = cpfDigitado.replace(/\D/g, "");
 
-            if (cpfsCompletos.includes(cpfSemFormatacao)) {
-                resultado.innerHTML = "<span style='color: green;'>DOCUMENTAÇÃO COMPLETA</span>";
-            } else if (cpfsPendentes[cpfSemFormatacao]) {
-                let pendencias = cpfsPendentes[cpfSemFormatacao]
-                    .map(doc => linksDocumentos[doc] 
-                        ? `<li>${doc} - <a href='${linksDocumentos[doc]}' target='_blank'>Baixar</a></li>`
-                        : `<li>${doc}</li>`)
-                    .join("");
-                resultado.innerHTML = `
-                    <span style='color: red;'>INCOMPLETO</span>
-                    <div class='pendencias'>
-                        <p>Documentos pendentes:</p>
-                        <ul>${pendencias}</ul>
-                   </div>
-<div class='instrucao'>
-    <p>Por favor, envie os documentos pendentes devidamente escaneados para o e-mail <strong>documentos@apipmcbdf.com.br</strong> com o assunto <em>"Documentação Pendente VPE"</em>.</p>
-    <p>É importante que os documentos sejam escaneados em alta qualidade para garantir sua legibilidade. Além disso, o envio dos originais é obrigatório e pode ser realizado das seguintes formas:</p>
-    <ul>
-        <li><strong>Por correio:</strong> envie para o endereço abaixo:</li>
-        <address>
-            Rua Evaristo da Veiga, 55, 10º andar<br>
-            CEP: 20031-040
-        </address>
-        <li><strong>Entrega pessoalmente:</strong> no mesmo endereço, durante o horário de atendimento (das 09h às 13h).</li>
-    </ul>
-    <p>Se preferir, você também pode entrar em contato conosco para mais informações:</p>
-    <ul>
-        <li><strong>Telefones:</strong> (21) 2532-6974 / 2220-6154 / 2544-2607</li>
-        <li><strong>WhatsApp:</strong> 21 98499-7413</li>
-    </ul>
-    <p>Caso tenha dúvidas, estamos à disposição para auxiliá-lo(a).</p>
-</div>
-                `;
-            } else {
-                resultado.innerHTML = "<span style='color: red;'>CPF NÃO ENCONTRADO</span>";
-            }
-        }
-    </script>
+      // Verifica se o CPF já está completo
+      if (cpfsCompletos.includes(cpfSemFormatacao)) {
+        resultado.innerHTML = `<span style='color: green;'>DOCUMENTAÇÃO COMPLETA</span>`;
+      }
+      // Se o CPF estiver na lista de pendentes
+      else if (cpfsPendentes[cpfSemFormatacao]) {
+        // Cria uma lista enumerada dos documentos
+        let pendencias = cpfsPendentes[cpfSemFormatacao]
+          .map(doc =>
+            linksDocumentos[doc]
+              ? `<li>${doc} <a href='${linksDocumentos[doc]}' target='_blank'>Baixar</a></li>`
+              : `<li>${doc}</li>`
+          )
+          .join("");
+
+        resultado.innerHTML = `
+          <span style='color: red;'>INCOMPLETO</span>
+          <div class='pendencias'>
+            <h2>Documentos pendentes (${cpfsPendentes[cpfSemFormatacao].length}):</h2>
+            <ol>
+              ${pendencias}
+            </ol>
+          </div>
+          <div class='instrucao'>
+            <p>Por favor, envie os documentos pendentes devidamente escaneados para o e-mail 
+              <strong>documentos@apipmcbdf.com.br</strong> 
+              com o assunto <em>"Documentação Pendente VPE"</em>.
+            </p>
+            <p>
+              É importante que os documentos sejam escaneados em alta qualidade para garantir sua legibilidade. 
+              Além disso, o envio dos originais é obrigatório e pode ser realizado das seguintes formas:
+            </p>
+            <ul>
+              <li><strong>Por correio:</strong> envie para o endereço abaixo:</li>
+              <address>
+                Rua Evaristo da Veiga, 55, 10º andar<br>
+                CEP: 20031-040
+              </address>
+              <li><strong>Entrega pessoalmente:</strong> no mesmo endereço, durante o horário de atendimento (das 09h às 13h).</li>
+            </ul>
+            <p>Se preferir, você também pode entrar em contato conosco para mais informações:</p>
+            <ul>
+              <li><strong>Telefones:</strong> (21) 2532-6974 / 2220-6154 / 2544-2607</li>
+              <li><strong>WhatsApp:</strong> 21 98499-7413</li>
+            </ul>
+            <p>Caso tenha dúvidas, estamos à disposição para auxiliá-lo(a).</p>
+          </div>
+        `;
+      } 
+      // CPF não consta na listagem
+      else {
+        resultado.innerHTML = `<span style='color: red;'>CPF NÃO ENCONTRADO</span>`;
+      }
+    }
+  </script>
 </body>
 </html>
